@@ -11779,7 +11779,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Import libraries necessary for this project</span>
@@ -11849,23 +11849,23 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Minimum price of the data</span>
-<span class="n">minimum_price</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>
+<span class="n">minimum_price</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>
 
 <span class="c1"># TODO: Maximum price of the data</span>
-<span class="n">maximum_price</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>
+<span class="n">maximum_price</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>
 
 <span class="c1"># TODO: Mean price of the data</span>
-<span class="n">mean_price</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">mean_price</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>
 
 <span class="c1"># TODO: Median price of the data</span>
-<span class="n">median_price</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+<span class="n">median_price</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>
 
 <span class="c1"># TODO: Standard deviation of prices of the data</span>
-<span class="n">std_price</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">std_price</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>
 
 <span class="c1"># Show the calculated statistics</span>
 <span class="k">print</span> <span class="s2">&quot;Statistics for Boston housing dataset:</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -11892,7 +11892,7 @@ Minimum price: $105,000.00
 Maximum price: $1,024,800.00
 Mean price: $454,342.94
 Median price $438,900.00
-Standard deviation of prices: $165,340.28
+Standard deviation of prices: $165,171.13
 </pre>
 </div>
 </div>
@@ -12130,7 +12130,9 @@ The other 2 features, however, have a reverse relation with the price. That mean
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong> By splitting the dataset into training and testing subsets, we ensure that we'll have a way to verify the accuracy of our model, using the testing subset. If we were to work with all our data as a training set, we could easily run into overfitting problems.</p>
+<p><strong>Answer: </strong></p>
+<p>The classifier uses the training set to create the model, when doing so, the classifier tries to create a model that best fits the given dataset, so the resulting model will do a great job predicting prices for the training set. However, we do not want to create a model that only works with the training set, we already know the outputs for that set afterall! So it's very important to set aside a part of the original data to use it to validate that our model works with new data, that is, data for which the model does not know the output.</p>
+<p>By splitting the dataset into training and testing subsets, we ensure that we'll have a way to verify the accuracy of our model, using the testing subset. If we were to work with all our data as a training set, we could easily run into overfitting problems.</p>
 
 </div>
 </div>
@@ -13800,7 +13802,9 @@ It looks like a maximum depth of 4 leads to the best model, because that is the 
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong>
-The grid search technique (provided by sklearn as the GridSearchCV), finds the classifier parameters that generate the best model by exhaustively trying all possible combinations of the given parameters candidates. This is a very nice way of discovering which parameters to use, since trying all different possibilities manually would take a long time and effort.</p>
+The grid search technique (provided by sklearn as the GridSearchCV), finds the classifier parameters that generate the best model by exhaustively trying all possible combinations of the given parameters candidates.</p>
+<p>On each iteration, the GridSearchCV tests the combination of parameters' effiency by passing the generated output and the true output to a 'score' function. The score function compare the two lists of outputs and give the algorithm a 'grade' (usually represented by a float value). GridSearchCV checks the results from the calls to the score function to find the combination of parameters resulting on the highest 'grade'.</p>
+<p>This is a very nice way of discovering which parameters to use, since trying all different possibilities manually would take a long time and effort.</p>
 
 </div>
 </div>
