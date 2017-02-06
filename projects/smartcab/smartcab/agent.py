@@ -75,13 +75,8 @@ class LearningAgent(Agent):
         ## TO DO ##
         ###########
         # Calculate the maximum Q-value of all actions for a given state
-        maxQ = 0.0
 
-        for k, q in self.Q[state].iteritems():
-            if q > maxQ:
-                maxQ = q
-
-        return maxQ
+        return max(self.Q[state].values())
 
 
     def createQ(self, state):
