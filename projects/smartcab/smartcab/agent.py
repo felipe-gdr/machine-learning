@@ -8,7 +8,7 @@ class LearningAgent(Agent):
     """ An agent that learns to drive in the Smartcab world.
         This is the object you will be modifying. """
 
-    def __init__(self, env, learning=True, epsilon=1.0, alpha=0.5):
+    def __init__(self, env, learning=True, epsilon=1.0, alpha=0.9):
         super(LearningAgent, self).__init__(env)     # Set the agent in the evironment
         self.planner = RoutePlanner(self.env, self)  # Create a route planner
         self.valid_actions = self.env.valid_actions  # The set of valid actions
@@ -44,8 +44,7 @@ class LearningAgent(Agent):
             self.epsilon = 0.0
             self.alpha = 0.0
         else:
-            self.epsilon = self.epsilon * 0.9
-            print 'epsilon', self.epsilon
+            self.epsilon = self.epsilon * 0.95
 
         return None
 
@@ -63,7 +62,7 @@ class LearningAgent(Agent):
         ## TO DO ##
         ###########
         # Set 'state' as a tuple of relevant data for the agent
-        state = (waypoint, inputs['light'], inputs['right'], inputs['left'], inputs['oncoming'])
+        state = (waypoint, inputs['light'], inputs['left'], inputs['oncoming'])
 
         return state
 
@@ -128,9 +127,14 @@ class LearningAgent(Agent):
             if self.epsilon > random.random():
                 action = random.choice(self.valid_actions)
             else:
-                for act, q in self.Q[state].iteritems():
-                    if q == self.get_maxQ(state):
-                        action = act
+                maxQ = self.get_maxQ(state)
+
+                # creates a new dict containing actions with maxQ
+                actions_with_maxQ = {k: v for k, v in self.Q[state].iteritems() if v == maxQ}
+
+                # if at least 1 action was found with maxQ
+                if actions_with_maxQ:
+                    action = random.choice(actions_with_maxQ.keys())
 
         if action == 'None':
             action = None
@@ -149,11 +153,12 @@ class LearningAgent(Agent):
         # When learning, implement the value iteration update rule
         #   Use only the learning rate 'alpha' (do not use the discount factor 'gamma')
 
-        oldQ = self.Q[state][action]
+        if self.learning:
+            oldQ = self.Q[state][action]
 
-        updatedQ = oldQ + self.alpha * (reward - oldQ)
+            updatedQ = oldQ + self.alpha * (reward - oldQ)
 
-        self.Q[state][str(action)] = updatedQ
+            self.Q[state][action] = updatedQ
 
         return
 
